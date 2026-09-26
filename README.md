@@ -22,6 +22,10 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 | 4 | `Lecture_04_Backpropagation.ipynb` | Two-layer and L-layer backprop, both gradient-checked to ~1e-11. Measures the activation-memory cost |
 | 5 | `Lecture_05_Automatic_Differentiation.ipynb` | All four ways to get a gradient — numerical, symbolic, forward mode, reverse mode — on one worked example, compared |
 | 6 | `Lecture_06_Building_an_Autodiff_Framework.ipynb` | A miniature autodiff framework (~150 lines), then an MLP trained with **no hand-derived gradients** |
+| 7 | `Lecture_07_Optimization_and_Initialization.ipynb` | Broadcast-gradient check, GD / momentum / Nesterov / Adam / Newton on a quadratic, SGD vs full batch, the 1/n · 2/n · 3/n initialisation experiment, and how far weights actually move |
+| 8 | `Lecture_08_Neural_Network_Library_Abstractions.ipynb` | Caffe, TensorFlow 1.0 and define-by-run styles on one example; then `Module`, `Parameter`, `Residual`, optimizers, weight decay and a data loader, training a ResNet |
+| 9 | `Lecture_09_Implementing_the_NN_Library.ipynb` | The weight-update memory leak and the `.data` fix, float32 internals and stable softmax, recursive `parameters()`, the lecture's ScaleAdd example checked by hand, and uniform initialisation |
+| 10 | `Lecture_10_Normalization_and_Regularization.ipynb` | LayerNorm, BatchNorm with running statistics, and Dropout built from ops and gradient-checked; normalisation versus initialisation on deep nets; weight decay with Adam; dropout as stochastic approximation |
 
 ## Results worth pointing at
 
@@ -36,6 +40,17 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
   mode needs one pass per input.
 - **Lecture 6** — the framework computes f''(2) = 12 for f(x) = x³, and trains an MLP to the
   same 2.2% test error as the hand-derived version in lecture 4.
+- **Lecture 7** — through 50 ReLU layers, σ² = 1/n decays to 6e-7, 2/n holds steady, 3/n explodes
+  to 5e5. Two runs from different seeds reach the same accuracy while ending ~6× further from each
+  other than either moved from its start.
+- **Lecture 8** — a declarative session asked for v₃ never computes v₄; L2 in the loss and weight
+  decay in the optimizer give parameters identical to 0.0; a residual block trains with no
+  `backward` method written anywhere.
+- **Lecture 9** — the naive update holds 2,002 graph nodes after 1,000 steps; `w.data` holds 1.
+  1.0 − 6×0.1 in float32 is exactly 0.39999992, as in the lecture.
+- **Lecture 10** — with layer norm, 1/n initialisation goes from 62.7% error to 5.8%, and three
+  examples differing only in scale all become [−1, 1]. Batch norm underperformed here, and a
+  direct test shows the running averages were *not* the cause.
 
 ## Dataset
 
