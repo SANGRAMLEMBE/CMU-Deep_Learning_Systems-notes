@@ -26,6 +26,9 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 | 8 | `Lecture_08_Neural_Network_Library_Abstractions.ipynb` | Caffe, TensorFlow 1.0 and define-by-run styles on one example; then `Module`, `Parameter`, `Residual`, optimizers, weight decay and a data loader, training a ResNet |
 | 9 | `Lecture_09_Implementing_the_NN_Library.ipynb` | The weight-update memory leak and the `.data` fix, float32 internals and stable softmax, recursive `parameters()`, the lecture's ScaleAdd example checked by hand, and uniform initialisation |
 | 10 | `Lecture_10_Normalization_and_Regularization.ipynb` | LayerNorm, BatchNorm with running statistics, and Dropout built from ops and gradient-checked; normalisation versus initialisation on deep nets; weight decay with Adam; dropout as stochastic approximation |
+| 11 | `Lecture_11_Convolutional_Networks.ipynb` | Convolution three ways (naive, multi-channel, im2col) checked against each other; edge detection on a real digit; output sizes; and proof that a convolution's transpose is a convolution with the flipped filter |
+| 12 | `Lecture_12_Hardware_Acceleration_CPU.ipynb` | Vectorisation, alignment, strides (transpose / slice / broadcast with no copies), access-order timing, counted loads for register tiling, and a cache simulator showing 8× fewer misses from tiling |
+| 13 | `Lecture_13_GPU_Acceleration.ipynb` | A simulated CUDA execution model: thread indexing and guards, a parallel scan for a dependent loop, shared memory cutting reads 20 → 8, what breaks without `__syncthreads()`, and two-level tiling with occupancy |
 
 ## Results worth pointing at
 
@@ -51,6 +54,12 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 - **Lecture 10** — with layer norm, 1/n initialisation goes from 62.7% error to 5.8%, and three
   examples differing only in scale all become [−1, 1]. Batch norm underperformed here, and a
   direct test shows the running averages were *not* the cause.
+- **Lecture 11** — transpose-of-convolution equals flipped-filter convolution, verified in 1-D and 2-D;
+  the im2col weight gradient matches finite differences to 6e-9.
+- **Lecture 12** — same 524,288 memory accesses, but tiling cuts simulated cache misses from 33,280
+  to 4,096 — until the tile outgrows the cache.
+- **Lecture 13** — without `__syncthreads()`, 48 of 64 window sums come out wrong; with shared memory,
+  global reads drop from 20 to 8 per block.
 
 ## Dataset
 
