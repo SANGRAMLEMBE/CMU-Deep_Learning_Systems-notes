@@ -29,6 +29,9 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 | 11 | `Lecture_11_Convolutional_Networks.ipynb` | Convolution three ways (naive, multi-channel, im2col) checked against each other; edge detection on a real digit; output sizes; and proof that a convolution's transpose is a convolution with the flipped filter |
 | 12 | `Lecture_12_Hardware_Acceleration_CPU.ipynb` | Vectorisation, alignment, strides (transpose / slice / broadcast with no copies), access-order timing, counted loads for register tiling, and a cache simulator showing 8× fewer misses from tiling |
 | 13 | `Lecture_13_GPU_Acceleration.ipynb` | A simulated CUDA execution model: thread indexing and guards, a parallel scan for a dependent loop, shared memory cutting reads 20 → 8, what breaks without `__syncthreads()`, and two-level tiling with occupancy |
+| 14 | `Lecture_14_NDArray_Backend.ipynb` | A working mini-NDArray on a flat buffer: views that share memory, a broadcast bigger than its memory, the bug a raw handle causes on a slice, lazy `compact()`, and a copy-pasted division kernel caught by a test |
+| 15 | `Lecture_15_Implementing_Convolutions.ipynb` | Convolution four ways — seven loops, 1×1 as one matmul, K² shifted matmuls, im2col via `as_strided` — all checked against SciPy, raced, and the im2col memory cost measured |
+| 16 | `Lecture_16_Training_Large_Models.ipynb` | Memory accounting, two-buffer inference, activation checkpointing with gradients checked bit-for-bit against backprop, pipeline schedules, data-parallel training with allreduce, a parameter server with a straggler, and compute/communication overlap |
 
 ## Results worth pointing at
 
@@ -60,6 +63,12 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
   to 4,096 — until the tile outgrows the cache.
 - **Lecture 13** — without `__syncthreads()`, 48 of 64 window sums come out wrong; with shared memory,
   global reads drop from 20 to 8 per block.
+- **Lecture 14** — for the view `A[:, 1:]`, adding 1 through the raw handle gives 1, 2, 3, 4 instead
+  of 2, 3, 5, 6; three chained views cost zero copies until one addition compacts them.
+- **Lecture 15** — shifted matmuls are ~600× faster than seven loops; im2col turns 36 numbers into 144,
+  and a real batch's im2col matrix is 7.9× the size of its input.
+- **Lecture 16** — checkpointing a 64-layer network cuts peak activations from 65 to 17 with
+  identical gradients; 4-worker data parallelism produces weights identical to single-device training.
 
 ## Dataset
 
