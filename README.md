@@ -32,7 +32,9 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 | 14 | `Lecture_14_NDArray_Backend.ipynb` | A working mini-NDArray on a flat buffer: views that share memory, a broadcast bigger than its memory, the bug a raw handle causes on a slice, lazy `compact()`, and a copy-pasted division kernel caught by a test |
 | 15 | `Lecture_15_Implementing_Convolutions.ipynb` | Convolution four ways — seven loops, 1×1 as one matmul, K² shifted matmuls, im2col via `as_strided` — all checked against SciPy, raced, and the im2col memory cost measured |
 | 16 | `Lecture_16_Training_Large_Models.ipynb` | Memory accounting, two-buffer inference, activation checkpointing with gradients checked bit-for-bit against backprop, pipeline schedules, data-parallel training with allreduce, a parameter server with a straggler, and compute/communication overlap |
+| 17 | `Lecture_17_Generative_Adversarial_Networks.ipynb` | GAN theory, demonstrated: equal-moment distributions a classifier still separates, an oracle discriminator training a generator, the label-flip gradient, transposed convolutions as true transposes, and cycle consistency |
 | 18 | `Lecture_18_GAN_Implementation.ipynb` | A GAN on a 2-D Gaussian: linear generator, MLP discriminator, alternating updates, what `detach` saves, equilibrium losses (ln 2 and 2 ln 2), the covariance-but-not-matrix result, and a modular `GANLoss` |
+| 19 | `Lecture_19_Sequence_Models_and_RNNs.ipynb` | RNN and LSTM cells from scratch: what the hidden state depends on, BPTT in one `backward()`, exploding/vanishing states, RNN-vs-LSTM gradient flow over 80 steps, a perfect-memory LSTM, a delayed-recall task, and a bidirectional RNN |
 
 ## Results worth pointing at
 
@@ -70,8 +72,12 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
   and a real batch's im2col matrix is 7.9× the size of its input.
 - **Lecture 16** — checkpointing a 64-layer network cuts peak activations from 65 to 17 with
   identical gradients; 4-worker data parallelism produces weights identical to single-device training.
+- **Lecture 17** — two distributions with identical mean and variance are told apart 80% of the time by a
+  small classifier; with an oracle discriminator the generator walks from 0 to exactly 3.0.
 - **Lecture 18** — the generator matches the data's mean and covariance (W^T W ≈ A^T A) while W itself
   looks nothing like A; losses settle at 0.693 and 1.387, the predicted ln 2 and 2 ln 2.
+- **Lecture 19** — 40 steps after the first input, its influence is ~10⁻¹³ through a plain RNN and ~10⁻⁵
+  through an LSTM; an LSTM beats an RNN on a 15-step memory task (82% vs 71%), and neither manages 25.
 
 ## Dataset
 
