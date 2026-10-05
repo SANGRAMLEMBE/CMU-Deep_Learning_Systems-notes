@@ -35,6 +35,11 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
 | 17 | `Lecture_17_Generative_Adversarial_Networks.ipynb` | GAN theory, demonstrated: equal-moment distributions a classifier still separates, an oracle discriminator training a generator, the label-flip gradient, transposed convolutions as true transposes, and cycle consistency |
 | 18 | `Lecture_18_GAN_Implementation.ipynb` | A GAN on a 2-D Gaussian: linear generator, MLP discriminator, alternating updates, what `detach` saves, equilibrium losses (ln 2 and 2 ln 2), the covariance-but-not-matrix result, and a modular `GANLoss` |
 | 19 | `Lecture_19_Sequence_Models_and_RNNs.ipynb` | RNN and LSTM cells from scratch: what the hidden state depends on, BPTT in one `backward()`, exploding/vanishing states, RNN-vs-LSTM gradient flow over 80 steps, a perfect-memory LSTM, a delayed-recall task, and a bidirectional RNN |
+| 20 | `Lecture_20_Implementing_LSTMs.ipynb` | A NumPy LSTM: fused gate matrix vs eight separate ones, time-first batching (bytes copied), stacked layers, and truncated BPTT with hidden-state repackaging |
+| 21 | `Lecture_21_Transformers_and_Attention.ipynb` | Receptive fields of temporal convolutions, self-attention from scratch, permutation equivariance, causal masks, positional encodings, and the T² cost |
+| 22 | `Lecture_22_Implementing_Transformers.ipynb` | Fused W_KQV attention vs a row-by-row reference, batch-first and batch matmul, multi-head attention by reshaping vs explicit loops, the full layer |
+| 23 | `Lecture_23_Model_Deployment.ipynb` | Export a trained model's graph to JSON, run it with a NumPy-only inference engine, memory planning, operator fusion, and what tracing misses |
+| 24 | `Lecture_24_ML_Compilation.ipynb` | A loop nest as data: split, reorder, code generation, simulated cache misses, random-search tuning, and loop-level fusion |
 
 ## Results worth pointing at
 
@@ -78,6 +83,10 @@ Sangram Lembe · [LinkedIn](https://www.linkedin.com/in/sangram-lembe-56262320a/
   looks nothing like A; losses settle at 0.693 and 1.387, the predicted ln 2 and 2 ln 2.
 - **Lecture 19** — 40 steps after the first input, its influence is ~10⁻¹³ through a plain RNN and ~10⁻⁵
   through an LSTM; an LSTM beats an RNN on a 15-step memory task (82% vs 71%), and neither manages 25.
+- **Lecture 20** — truncated BPTT that resets each chunk caps out at 0.748 accuracy; carrying the detached
+  state across chunks reaches 1.000.
+- **Lecture 23** — memory planning runs an 8-layer network in 2 buffers instead of 16; fusion cuts 7 kernels to 2.
+- **Lecture 24** — a random search over 25 loop schedules finds one with 24× fewer simulated cache misses.
 
 ## Dataset
 
